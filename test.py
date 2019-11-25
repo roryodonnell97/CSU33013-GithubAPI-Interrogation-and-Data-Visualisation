@@ -29,9 +29,13 @@ json = json.loads(f.read())
 # print "Here is the full json"
 # print json
 
+# print
+# print "Here is the first element"
+# print json [0]
+
 print
-print "Here is the first element"
-print json[0]
+print "Here is a piece of data from the second element"
+print "Commit Message: " + json[1]['commit']['message']
 
 # print
 # print "Now I'm extracting data"
