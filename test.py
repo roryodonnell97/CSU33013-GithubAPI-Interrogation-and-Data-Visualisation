@@ -1,6 +1,7 @@
 from github import Github
 import urllib2
 import json
+import datetime
 
 # using username and password
 # g = Github("username", "password")
@@ -33,9 +34,23 @@ json = json.loads(f.read())
 # print "Here is the first element"
 # print json [0]
 
-print
+fullDate = json[0]['commit']['committer']['date']
+
+daysOfTheWeek = ("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
+year = fullDate[0:4]
+month = fullDate[5:7]
+day = fullDate[8:10]
+weekdayInt = datetime.date(int(year), int(month), int(day))    # Converts date to ints
+weekdayNumber = weekdayInt.weekday()
+weekdayString = daysOfTheWeek[weekdayNumber]
+
+date = fullDate[0:10]
+time = fullDate[11:19]
+
 print "Here is a piece of data from the second element"
-print "Commit Message: " + json[1]['commit']['message']
+print "Commit Date: " + date
+print "Commit Day: " + weekdayString
+print "Commit Time: " + time
 
 # print
 # print "Now I'm extracting data"
