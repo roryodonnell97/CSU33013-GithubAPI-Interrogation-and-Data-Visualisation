@@ -3,6 +3,9 @@ import urllib2
 import json
 import datetime
 import sqlite3 
+import  requests
+from collections import Counter
+
 
 # Retrieve JSON from Github API
 req = urllib2.Request("https://api.github.com/repos/roryodonnell97/CSU33013-GithubAPI-Interrogation-and-Data-Visualisation/commits")
@@ -35,8 +38,13 @@ daysOfTheWeek = ("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","
 index = 0
 number_of_commits = 0
 
+# Get number of contributors by finding number of occurrences of 'contributions:'
+json_string = json.dumps(contibutors_json)
+substring = '"contributions": '
+number_of_contributors = json_string.count(substring)
+
 # Get number of commits from each contributor
-while index < 1:
+while index < number_of_contributors:
     number_of_commits += contibutors_json[index]['contributions']
     index += 1
 
