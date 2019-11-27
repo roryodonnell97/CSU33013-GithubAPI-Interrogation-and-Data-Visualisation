@@ -51,7 +51,7 @@ while index < number_of_contributors:
 
 # Parse the data of each commit and add to database
 # Each page of the commits JSON holds 30 commits
-# loop through 30 commits per page n times where n = number_of_commits/30
+# Loop through 30 commits per page n times where n = number_of_commits/30
 current_page = "0"
 for i in range(number_of_commits/30):
     current_page = str(i+1)
@@ -83,7 +83,6 @@ for i in range(number_of_commits/30):
         print "Commit Time: " + time
         print
 
-# loop through remaining commits on last page
 # This sections only occurs if number_of_commits % 30 != 0
 if number_of_commits > 30 and number_of_commits % 30 != 0:
     current_page_int = (int(current_page) + 1)
@@ -93,6 +92,7 @@ if number_of_commits > 30 and number_of_commits % 30 != 0:
     f = opener.open(req)
     commits_json = json.loads(f.read())
 
+# Loop through remaining commits on last page
 for i in range(number_of_commits%30):
 
     fullDate = commits_json[i]['commit']['committer']['date']
