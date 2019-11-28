@@ -7,18 +7,6 @@ import  requests
 from collections import Counter
 
 
-# Retrieve JSON from Github API
-req = urllib2.Request("https://api.github.com/repos/roryodonnell97/CSU33013-GithubAPI-Interrogation-and-Data-Visualisation/commits")
-opener = urllib2.build_opener()
-f = opener.open(req)
-commits_json = json.loads(f.read())
-
-req = urllib2.Request("https://api.github.com/repos/roryodonnell97/CSU33013-GithubAPI-Interrogation-and-Data-Visualisation/contributors")
-opener = urllib2.build_opener()
-f = opener.open(req)
-contibutors_json = json.loads(f.read())
-
-
 # Create Table
 connection = sqlite3.connect("commitTable.db")    
 crsr = connection.cursor() 
@@ -35,27 +23,69 @@ crsr.execute(sql_command)
 
 # Variables
 daysOfTheWeek = ("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")
-index = 0
 number_of_commits = 0
+number_of_contributors = 0
+pageNumber = 1
+lastPageFound = False
 
 # Get number of contributors by finding number of occurrences of 'contributions:'
-json_string = json.dumps(contibutors_json)
-substring = '"contributions": '
-number_of_contributors = json_string.count(substring)
+while lastPageFound is False:
+    # Retrieve JSON from Github API
+    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + str(pageNumber))
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    contibutors_json = json.loads(f.read())
+
+    json_string = json.dumps(contibutors_json)
+    substring = '"contributions": '
+    temp = number_of_contributors
+    number_of_contributors += json_string.count(substring)
+     
+    pageNumber +=1
+
+    if (number_of_contributors - temp) < 30:
+        lastPageFound = True
 
 # Get number of commits from each contributor
-while index < number_of_contributors:
-    number_of_commits += contibutors_json[index]['contributions']
-    index += 1
+current_page = "0"
+for i in range(number_of_contributors/30):
+    current_page = str(i+1)
+    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + current_page)
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    contibutors_json = json.loads(f.read())
+    for x in range(30):
+        number_of_commits += contibutors_json[x]['contributions']
+
+
+if number_of_contributors > 30 and number_of_contributors % 30 != 0:
+    current_page_int = (int(current_page))
+    current_page = str(current_page_int)
+    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + current_page)
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    contibutors_json = json.loads(f.read())
+
+for i in range(number_of_contributors%30):
+    number_of_commits += contibutors_json[x]['contributions']
+
+print "Number of commits: " + str(number_of_commits)
+print "Number of contributors: " + str(number_of_contributors)
 
 
 # Parse the data of each commit and add to database
 # Each page of the commits JSON holds 30 commits
 # Loop through 30 commits per page n times where n = number_of_commits/30
+# Retrieve JSON from Github API
+req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits")
+opener = urllib2.build_opener()
+f = opener.open(req)
+commits_json = json.loads(f.read())
+
 current_page = "0"
 for i in range(number_of_commits/30):
     current_page = str(i+1)
-    req = urllib2.Request("https://api.github.com/repos/roryodonnell97/CSU33013-GithubAPI-Interrogation-and-Data-Visualisation/commits?page=" + current_page)
+    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits?page=" + current_page)
     opener = urllib2.build_opener()
     f = opener.open(req)
     commits_json = json.loads(f.read())
@@ -87,7 +117,7 @@ for i in range(number_of_commits/30):
 if number_of_commits > 30 and number_of_commits % 30 != 0:
     current_page_int = (int(current_page) + 1)
     current_page = str(current_page_int)
-    req = urllib2.Request("https://api.github.com/repos/roryodonnell97/CSU33013-GithubAPI-Interrogation-and-Data-Visualisation/commits?page=" + current_page)
+    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits?page=" + current_page)
     opener = urllib2.build_opener()
     f = opener.open(req)
     commits_json = json.loads(f.read())
