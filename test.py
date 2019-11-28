@@ -73,15 +73,15 @@ print "Number of commits: " + str(number_of_commits)
 print "Number of contributors: " + str(number_of_contributors)
 
 
-# Parse the data of each commit and add to database
-# Each page of the commits JSON holds 30 commits
-# Loop through 30 commits per page n times where n = number_of_commits/30
 # Retrieve JSON from Github API
 req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits")
 opener = urllib2.build_opener()
 f = opener.open(req)
 commits_json = json.loads(f.read())
 
+# Parse the data of each commit and add to database
+# Each page of the commits JSON holds 30 commits
+# Loop through 30 commits per page n times where n = number_of_commits/30
 current_page = "0"
 for i in range(number_of_commits/30):
     current_page = str(i+1)
