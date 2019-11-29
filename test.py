@@ -33,7 +33,7 @@ lastPageFound = False
 while lastPageFound is False:
 
     # Retrieve contributors JSON from Github API
-    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + str(pageNumber))
+    req = urllib2.Request("https://api.github.com/repos/aws/sagemaker-python-sdk/contributors?page=" + str(pageNumber))
     opener = urllib2.build_opener()
     f = opener.open(req)
     contibutors_json = json.loads(f.read())
@@ -52,7 +52,7 @@ while lastPageFound is False:
 current_page = "0"
 for i in range(number_of_contributors/30):
     current_page = str(i+1)
-    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + current_page)
+    req = urllib2.Request("https://api.github.com/repos/aws/sagemaker-python-sdk/contributors?page=" + current_page)
     opener = urllib2.build_opener()
     f = opener.open(req)
     contibutors_json = json.loads(f.read())
@@ -63,7 +63,7 @@ for i in range(number_of_contributors/30):
 if number_of_contributors > 30 and number_of_contributors % 30 != 0:
     current_page_int = (int(current_page))
     current_page = str(current_page_int)
-    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + current_page)
+    req = urllib2.Request("https://api.github.com/repos/aws/sagemaker-python-sdk/contributors?page=" + current_page)
     opener = urllib2.build_opener()
     f = opener.open(req)
     contibutors_json = json.loads(f.read())
@@ -78,7 +78,7 @@ print "Number of contributors: " + str(number_of_contributors)
 
 
 # Retrieve commits JSON from Github API
-req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits")
+req = urllib2.Request("https://api.github.com/repos/aws/sagemaker-python-sdk/commits")
 opener = urllib2.build_opener()
 f = opener.open(req)
 commits_json = json.loads(f.read())
@@ -89,7 +89,7 @@ commits_json = json.loads(f.read())
 current_page = "0"
 for i in range(number_of_commits/30):
     current_page = str(i+1)
-    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits?page=" + current_page)
+    req = urllib2.Request("https://api.github.com/repos/aws/sagemaker-python-sdk/commits?page=" + current_page)
     opener = urllib2.build_opener()
     f = opener.open(req)
     commits_json = json.loads(f.read())
@@ -123,7 +123,7 @@ for i in range(number_of_commits/30):
 if number_of_commits > 30 and number_of_commits % 30 != 0:
     current_page_int = (int(current_page) + 1)
     current_page = str(current_page_int)
-    req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits?page=" + current_page)
+    req = urllib2.Request("https://api.github.com/repos/aws/sagemaker-python-sdk/commits?page=" + current_page)
     opener = urllib2.build_opener()
     f = opener.open(req)
     commits_json = json.loads(f.read())
