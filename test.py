@@ -28,9 +28,10 @@ number_of_contributors = 0
 pageNumber = 1
 lastPageFound = False
 
-# Get number of contributors by finding number of occurrences of 'contributions:'
+# Get number of contributors by finding number of occurrences of 'contributions:' in JSON
 while lastPageFound is False:
-    # Retrieve JSON from Github API
+
+    # Retrieve contributors JSON from Github API
     req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/contributors?page=" + str(pageNumber))
     opener = urllib2.build_opener()
     f = opener.open(req)
@@ -66,14 +67,16 @@ if number_of_contributors > 30 and number_of_contributors % 30 != 0:
     f = opener.open(req)
     contibutors_json = json.loads(f.read())
 
+# Loop through remaining contributors on last page
 for i in range(number_of_contributors%30):
     number_of_commits += contibutors_json[x]['contributions']
 
+# Now have number of commits and contributors
 print "Number of commits: " + str(number_of_commits)
 print "Number of contributors: " + str(number_of_contributors)
 
 
-# Retrieve JSON from Github API
+# Retrieve commits JSON from Github API
 req = urllib2.Request("https://api.github.com/repos/pksunkara/octonode/commits")
 opener = urllib2.build_opener()
 f = opener.open(req)
@@ -114,6 +117,7 @@ for i in range(number_of_commits/30):
         print
 
 # This sections only occurs if number_of_commits % 30 != 0
+# Finds the last page if number of pages is > 1
 if number_of_commits > 30 and number_of_commits % 30 != 0:
     current_page_int = (int(current_page) + 1)
     current_page = str(current_page_int)
