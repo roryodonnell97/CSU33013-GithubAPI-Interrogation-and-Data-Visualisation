@@ -32,14 +32,14 @@ var svg = d3.select("#my_dataviz")
 d3.csv("https://raw.githubusercontent.com/roryodonnell97/CSU33013-GithubAPI-Interrogation-and-Data-Visualisation/master/scatter_plot_data.csv", function(data) {
 
     // List of groups (here I have one group per column)
-    var allGroup = ["valueA", "valueB", "valueC"]
+    var allGroup = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     // Reformat the data: we need an array of arrays of {x, y} tuples
     var dataReady = allGroup.map( function(grpName) { // .map allows to do something for each element of the list
       return {
         name: grpName,
         values: data.map(function(d) {
-          return {time: d.time, value: +d[grpName]};
+          return {day: d.day, value: +d[grpName]};
         })
       };
     });
@@ -68,7 +68,7 @@ d3.csv("https://raw.githubusercontent.com/roryodonnell97/CSU33013-GithubAPI-Inte
 
     // Add the lines
     var line = d3.line()
-      .x(function(d) { return x(+d.time) })
+      .x(function(d) { return x(+d.day) })
       .y(function(d) { return y(+d.value) })
     svg.selectAll("myLines")
       .data(dataReady)
@@ -92,7 +92,7 @@ d3.csv("https://raw.githubusercontent.com/roryodonnell97/CSU33013-GithubAPI-Inte
       .data(function(d){ return d.values })
       .enter()
       .append("circle")
-        .attr("cx", function(d) { return x(d.time) } )
+        .attr("cx", function(d) { return x(d.day) } )
         .attr("cy", function(d) { return y(d.value) } )
         .attr("r", 5)
         .attr("stroke", "white")
@@ -105,7 +105,7 @@ d3.csv("https://raw.githubusercontent.com/roryodonnell97/CSU33013-GithubAPI-Inte
         .append('g')
         .append("text")
           .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
-          .attr("transform", function(d) { return "translate(" + x(d.value.time) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
+          .attr("transform", function(d) { return "translate(" + x(d.value.day) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
           .attr("x", 12) // shift the text a bit more right
           .text(function(d) { return d.name; })
           .style("fill", function(d){ return myColor(d.name) })
