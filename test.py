@@ -15,7 +15,8 @@ crsr.execute("DROP TABLE if exists commitTable")
 sql_command = """CREATE TABLE if not exists commitTable (  
 full_date VARCHAR(30),  
 date VARCHAR(20),  
-weekday VARCHAR(20),  
+weekday VARCHAR(20),
+weekday_num INTEGER,  
 time VARCHAR(20)  
 );"""
 crsr.execute(sql_command) 
@@ -107,12 +108,13 @@ for i in range(number_of_commits/30):
         date = fullDate[0:10]
         time = fullDate[11:19]
 
-        sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', '" + time + "');"
+        sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', ' + weekdayNumber + ', '" + time + "');"
         crsr.execute(sql_command)
 
         print "Commit Number: " + str(x + (i*30) + 1)
         print "Commit Date: " + date
         print "Commit Day: " + weekdayString
+        print "Commit Day Number: " + str(weekdayNumber)
         print "Commit Time: " + time
         print
 
@@ -141,12 +143,13 @@ for i in range(number_of_commits%30):
     date = fullDate[0:10]
     time = fullDate[11:19]
 
-    sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', '" + time + "');"
+    sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', ' + weekdayNumber + ', '" + time + "');"
     crsr.execute(sql_command)
 
     print "Commit Number: " + str(i + (number_of_commits/30 * 30) + 1)
     print "Commit Date: " + date
     print "Commit Day: " + weekdayString
+    print "Commit Day Number: " + str(weekdayNumber)
     print "Commit Time: " + time
     print
 
