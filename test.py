@@ -108,7 +108,7 @@ for i in range(number_of_commits/30):
         date = fullDate[0:10]
         time = fullDate[11:19]
 
-        sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', ' + weekdayNumber + ', '" + time + "');"
+        sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', '" + str(weekdayNumber) + "', '" + time + "');"
         crsr.execute(sql_command)
 
         print "Commit Number: " + str(x + (i*30) + 1)
@@ -143,7 +143,7 @@ for i in range(number_of_commits%30):
     date = fullDate[0:10]
     time = fullDate[11:19]
 
-    sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', ' + weekdayNumber + ', '" + time + "');"
+    sql_command = "INSERT INTO commitTable VALUES ('"+ fullDate + "', '" + date + "', '" + weekdayString + "', '" + str(weekdayNumber) + "', '" + time + "');"
     crsr.execute(sql_command)
 
     print "Commit Number: " + str(i + (number_of_commits/30 * 30) + 1)
